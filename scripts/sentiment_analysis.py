@@ -5,9 +5,19 @@ import pandas as pd
 data = pd.read_csv("../data/combined_data.csv")
 
 # Perform sentiment analysis
-data["Sentiment"] = data["Text"].apply(lambda x: TextBlob(str(x)).sentiment.polarity)
-data["Sentiment_Label"] = data["Sentiment"].apply(lambda x: "Positive" if x > 0 else ("Negative" if x < 0 else "Neutral"))
+sentiment_mapping = {"Positive": 1, "Neutral": 0, "Negative": -1}
 
-# Save results
+def analyze_sentiment(text):
+    polarity = TextBlob(str(text)).sentiment.polarity
+    if polarity > 0:
+        return 1  # Positive
+    elif polarity < 0:
+        return -1  # Negative
+    else:
+        return 0  # Neutral
+
+data["Sentiment_Numeric"] = data["Text"].apply(analyze_sentiment)
+
+# Save the results
 data.to_csv("../data/sentiment_results.csv", index=False)
-print("Sentiment analysis completed. Results saved to ../data/sentiment_results.csv")
+print("Sentiment analysis completed and saved to ../data/sentiment_results.csv")

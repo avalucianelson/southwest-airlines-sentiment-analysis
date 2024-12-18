@@ -1,39 +1,50 @@
 import requests
 import pandas as pd
 import os
+from datetime import date, timedelta
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
 
-api_key = os.getenv("NEWSAPI_KEY")  # Replace with your NewsAPI key
-query = "Southwest Airlines assigned seating"
-from_date = "2024-11-18"  # Adjust this date as needed
-url = f"https://newsapi.org/v2/everything?q={query}&from={from_date}&sortBy=relevance&apiKey={api_key}"
+# Set up NewsAPI credentials
+api_key = os.getenv("NEWSAPI_KEY")
 
-# Fetch articles from NewsAPI
-response = requests.get(url)
-if response.status_code == 200:
-    articles = response.json()["articles"]
+# Search queries
+queries = [
+    {"query": "Southwest Airlines assigned seating", "is_assigned_seating": 1},
+    {"query": "Southwest Airlines", "is_assigned_seating": 0}
+]
 
-    # Parse articles into a list
-    data = []
-    for article in articles:
-        data.append({
-            "Source": article["source"]["name"],
-            "Author": article["author"],
-            "Title": article["title"],
-            "Description": article["description"],
-            "PublishedAt": article["publishedAt"],
-            "URL": article["url"]
-        })
+data = []
+for search in queries:
+    query = search["query"]
+    is_assigned_seating = search["is_assigned_seating"]
 
-    # Save articles to a DataFrame
-    df_news = pd.DataFrame(data)
+    # Set date range
+    today = date.today()
+    last_month = today - timedelta(days=30)
+    url = f"https://newsapi.org/v2/everything?q={query}&from={last_month}&to={today}&sortBy=relevance&apiKey={api_key}"
 
-    # Save to CSV
-    df_news.to_csv("../data/news_articles.csv", index=False)
-    print("News articles saved to ../data/news_articles.csv")
-else:
-    print(f"Failed to fetch articles. Status Code: {response.status_code}")
-    print("Response content:", response.content)
+    # Fetch articles
+    response = requests.get(url)
+    if response.status_code == 200:
+        articles = response.json()["articles"]
+
+        # Parse articles
+        for article in articles:
+            data.append({
+                "Source": article["source"]["name"],
+                "Title": article["title"],
+                "Description": article["description"],
+                "PublishedAt": article["publishedAt"],
+                "URL": article["url"],
+                "Is_Assigned_Seating": is_assigned_seating
+            })
+    else:
+        print(f"Failed to fetch articles for query '{query}'. Status Code: {response.status_code}")
+
+# Save to CSV
+df_news = pd.DataFrame(data)
+df_news.to_csv("../data/news_articles.csv", index=False)
+print("News articles saved to ../data/news_articles.csv")
