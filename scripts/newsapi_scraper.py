@@ -1,8 +1,12 @@
 import requests
 import pandas as pd
+import os
+from dotenv import load_dotenv
 
-# NewsAPI credentials
-api_key = "738641510e34433fa3cc3e94246653e7"  # Replace with your NewsAPI key
+# Load environment variables from .env file
+load_dotenv()
+
+api_key = os.getenv("NEWSAPI_KEY")  # Replace with your NewsAPI key
 query = "Southwest Airlines assigned seating"
 from_date = "2024-11-18"  # Adjust this date as needed
 url = f"https://newsapi.org/v2/everything?q={query}&from={from_date}&sortBy=relevance&apiKey={api_key}"

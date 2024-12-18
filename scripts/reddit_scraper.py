@@ -1,11 +1,16 @@
+import os
 import praw
 import pandas as pd
 from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Set up Reddit API credentials
 reddit = praw.Reddit(
-    client_id="Ep6yr32IFAXpOMGy9JyYpA",  # Your client ID
-    client_secret="jmzsKw7p7iqO0R2Z8OHafqwq3m9RUQ",  # Your secret ID
+    client_id=os.getenv("REDDIT_CLIENT_ID"),  # Your client ID
+    client_secret=os.getenv("REDDIT_CLIENT_SECRET"),  # Your secret ID
     user_agent="southwest-analysis-script"  # Choose a descriptive user agent
 )
 

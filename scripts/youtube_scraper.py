@@ -1,8 +1,13 @@
+import os
 from googleapiclient.discovery import build
 import pandas as pd
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Set up YouTube API
-api_key = "AIzaSyDAdyna39EYAYt6OiO3-6DDS0FumF7_rfc"  # My API key
+api_key = os.getenv("YOUTUBE_API_KEY")  # My API key
 youtube = build("youtube", "v3", developerKey=api_key)
 
 # Search for videos
