@@ -1,0 +1,27 @@
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:      Sentiment_Numeric   R-squared:                       0.021
+Model:                            OLS   Adj. R-squared:                  0.011
+Method:                 Least Squares   F-statistic:                     2.061
+Date:                Wed, 18 Dec 2024   Prob (F-statistic):              0.154
+Time:                        13:53:32   Log-Likelihood:                -120.35
+No. Observations:                 100   AIC:                             244.7
+Df Residuals:                      98   BIC:                             249.9
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+================================================================================
+                   coef    std err          t      P>|t|      [0.025      0.975]
+--------------------------------------------------------------------------------
+const            0.2124      0.269      0.790      0.431      -0.321       0.746
+Date_Numeric  9.325e-05    6.5e-05      1.435      0.154   -3.57e-05       0.000
+==============================================================================
+Omnibus:                       23.034   Durbin-Watson:                   1.920
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               32.190
+Skew:                          -1.389   Prob(JB):                     1.02e-07
+Kurtosis:                       3.063   Cond. No.                     1.37e+04
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 1.37e+04. This might indicate that there are
+strong multicollinearity or other numerical problems.
